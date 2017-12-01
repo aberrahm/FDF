@@ -6,7 +6,8 @@
 /*   By: aberrahm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/26 11:03:50 by aberrahm          #+#    #+#             */
-/*   Updated: 2017/12/01 22:12:08 by aberrahm         ###   ########.fr       */
+/*   Updated: 2017/12/02 00:37:43 by aberrahm         ###   ########.fr       */
+
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +43,37 @@ int *recup_map(char *line)
 }
 
 
-t_xy	ft_iso1(t_xy posfdf)
+t_xy	ft_resize_map(t_all *pos, t_xy dot)
 {
-	int		a;
+	static t_xy		resize;
+	static t_xy		margin;
+	static int		done;
 
-	a = posfdf.x;
-	posfdf.x = (posfdf.x + posfdf.y) * 4;
-	posfdf.y = ((posfdf.y - a) * 4) - posfdf.z * 2;
-	posfdf.x += 300;
-	posfdf.y += 825;
-	return (posfdf);
+	if (done == 0)
+	{
+		resize.x = pos->size_win_x / (float)(pos->size_map.x + 1);
+		resize.y = pos->size_win_y / (float)(pos->size_map.y + 1);
+		if (resize.y <= 0 || resize.x <= 0)
+		{
+			resize.x = 1;
+			resize.y = 1;
+		}
+		if (resize.x > resize.y)
+			resize.x = resize.y;
+		else
+			resize.y = resize.x;
+		margin.x = pos->size_win_x - (pos->size_map.x - 1) * resize.x;
+		margin.y = pos->size_win_y - (pos->size_map.y - 1) * resize.y;
+		done = 1;
+	}
+	resize.z = dot.x;
+	dot.x = dot.x + dot.y;
+	dot.y = (dot.y - resize.z) - dot.z;
+	dot.x *= resize.x / 2.0;
+	dot.y *= resize.y / 2.0;
+	dot.x += margin.x / 2.0;
+	dot.y += margin.y / 2.0;
+	return (dot);
 }
 
 void	ft_trace_map(t_list *map, t_all *pos)
@@ -72,7 +94,8 @@ void	ft_trace_map(t_list *map, t_all *pos)
 				start.z = ((int*)map->content)[start.x + 1];
 				end.z = ((int*)map->content)[end.x + 1];
 				//mettre fonction qui va remplacer iso (+propre)
-				create_line(pos, ft_iso1(start), ft_iso1(end), 0x00cccc);
+				create_line(pos, ft_resize_map(pos, start),
+						ft_resize_map(pos, end), 0x0000cc);
 			}
 			if (map->next && map->next->content 
 					&& ((int*)map->next->content)[0] > start.x)
@@ -80,8 +103,9 @@ void	ft_trace_map(t_list *map, t_all *pos)
 				end.x = start.x;
 				end.y = start.y + 1;
 				start.z = ((int*)map->content)[start.x + 1];
-				end.z = ((int*)map->content)[end.x + 1];
-				create_line(pos, ft_iso1(start), ft_iso1(end), 0xcccc00);
+				end.z = ((int*)map->next->content)[end.x + 1];
+				create_line(pos, ft_resize_map(pos, start),
+						ft_resize_map(pos, end), 0xcc0000);
 			}
 			start.x++;
 		}

@@ -6,7 +6,7 @@
 /*   By: aberrahm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/12 18:25:32 by aberrahm          #+#    #+#             */
-/*   Updated: 2017/07/06 06:42:24 by aberrahm         ###   ########.fr       */
+/*   Updated: 2017/12/02 00:37:53 by aberrahm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ int		create_line(t_all *pos, t_xy start, t_xy end, uint32_t color)
 	ft_sign(pos, &start, &end);
 	abs_pattern(pos, &start, &end);
 	my_pixel_put(pos, start.x, start.y, color);
-	create_line_nxt(pos, &start, &end);
+	create_line_nxt(pos, &start, &end, color);
 	return (0);
 }
 
-void	create_line_nxt(t_all *pos, t_xy *start, t_xy *end)
+void	create_line_nxt(t_all *pos, t_xy *start, t_xy *end, uint32_t color)
 {
 	while (!(start->x == end->x && start->y == end->y))
 	{
@@ -37,11 +37,11 @@ void	create_line_nxt(t_all *pos, t_xy *start, t_xy *end)
 		{
 			pos->remnant -= 1.0;
 			equal_sae(pos, start, end);
-			my_pixel_put(pos, start->x, start->y, ROSEC);
+			my_pixel_put(pos, start->x, start->y, color);
 		}
 		equal_sae_n(pos, start);
-		my_pixel_put(pos, start->x, start->y, ROSEC);
-		create_line_nxt1(pos, start, AQUA);
+		my_pixel_put(pos, start->x, start->y, color);
+		create_line_nxt1(pos, start, color);
 	}
 }
 

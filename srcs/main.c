@@ -6,7 +6,7 @@
 /*   By: aberrahm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 01:44:25 by aberrahm          #+#    #+#             */
-/*   Updated: 2017/12/01 21:53:47 by aberrahm         ###   ########.fr       */
+/*   Updated: 2017/12/01 23:30:08 by aberrahm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int		main(int ac, char **av)
 	t_list	*tmp;
 
 	start = NULL;
+	ft_memset(&img1, 0, sizeof(t_all));
 	if (ac > 1 && av[1])
 	{
 		if ((fd = open(av[1], O_RDONLY)) < 0)
@@ -42,6 +43,9 @@ int		main(int ac, char **av)
 				tmp->next = ft_lstnew((void const*)tab, (tab[0] + 1) * sizeof(int));
 				tmp = tmp->next;
 			}
+			img1.size_map.y++;
+			if (img1.size_map.x < tab[0])
+				img1.size_map.x = tab[0];
 			//ft_memdel((void*)tab);
 		}
 		create_img(&img1);

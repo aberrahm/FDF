@@ -6,7 +6,7 @@
 /*   By: aberrahm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 06:19:31 by aberrahm          #+#    #+#             */
-/*   Updated: 2017/12/01 21:29:46 by aberrahm         ###   ########.fr       */
+/*   Updated: 2017/12/02 00:29:53 by aberrahm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef	struct	s_all
 	float			remnant;
 	float			err;
 	t_xy			posfdf;
+	t_xy			size_map;
 	t_xy			pattern;
 	t_xy			sign;
 	t_xy			var;
@@ -78,7 +79,8 @@ typedef	struct	s_all
 void			call_ft(t_all img1);
 int				ft_key_hook(int keycode, t_all *pos);
 int				create_line(t_all *pos, t_xy start, t_xy end, uint32_t color);
-void			create_line_nxt(t_all *pos, t_xy *start, t_xy *end);
+void			create_line_nxt(t_all *pos, t_xy *start,
+		t_xy *end, uint32_t color);
 void			create_line_nxt1(t_all *pos, t_xy *start, uint32_t color);
 void			ft_sign(t_all *pos, t_xy *start, t_xy *end);
 void			ft_pattern(t_all *pos, t_xy *start, t_xy *end);

@@ -4,7 +4,7 @@ int    temp_quit(void *data)
 {
     static int  i;
 
-    if (i <= 20000)
+    if (i <= 2000000)
         i++;
     else
         exit(0);
