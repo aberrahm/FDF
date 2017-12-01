@@ -29,6 +29,7 @@ FRAMEWORK = -framework OpenGL -framework AppKit
 
 SRCS = srcs/create_image.c \
 	   srcs/main.c \
+	   srcs/time.c \
 	   srcs/pars.c \
 	   srcs/event.c \
 	   srcs/create_line.c \

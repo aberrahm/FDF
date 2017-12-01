@@ -6,7 +6,7 @@
 /*   By: aberrahm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/27 20:23:41 by aberrahm          #+#    #+#             */
-/*   Updated: 2017/07/08 10:51:51 by aberrahm         ###   ########.fr       */
+/*   Updated: 2017/12/01 21:45:30 by aberrahm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	my_pixel_put(t_all *data, int x, int y, uint32_t color)
 {
 	uint32_t	*pixel;
 
-	if (x < 0 || x >= 1900 || y < 0 || y >= 1300)
+	if (x < 0 || x >= data->size_win_x || y < 0 || y >= data->size_win_y)
 		return ;
 	pixel = (uint32_t*)(data->data + x * data->bpp / 8 + y * data->sizeline);
 	*pixel = color;
