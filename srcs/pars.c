@@ -6,26 +6,22 @@
 /*   By: aberrahm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/26 11:03:50 by aberrahm          #+#    #+#             */
-/*   Updated: 2017/12/02 00:37:43 by aberrahm         ###   ########.fr       */
-
+/*   Updated: 2017/12/04 00:45:33 by aberrahm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
 
-int *recup_map(char *line)
+int		*recup_map(char *line)
 {
-
-	int lent;
-	char **tab;
-	int  *tabz;
+	int		lent;
+	char	**tab;
+	int		*tabz;
 
 	lent = 0;
 	tab = ft_strsplit(line, ' ');
 	while (tab[lent] != NULL)
-	{
 		lent++;
-	}
 	tabz = (int *)ft_memalloc(sizeof(int) * (lent + 1));
 	tabz[0] = lent;
 	lent = 0;
@@ -35,13 +31,12 @@ int *recup_map(char *line)
 		lent++;
 	}
 	lent = 0;
-	//while (tab[lent])
-	//ft_strdel(&tab[lent++]);
-	//ft_memdel((void**)tab);
-	//ft_strdel(&line);
+	while (tab[lent])
+		ft_strdel(&tab[lent++]);
+	ft_memdel((void**)&tab);
+	ft_strdel(&line);
 	return (tabz);
 }
-
 
 t_xy	ft_resize_map(t_all *pos, t_xy dot)
 {
@@ -66,14 +61,19 @@ t_xy	ft_resize_map(t_all *pos, t_xy dot)
 		margin.y = pos->size_win_y - (pos->size_map.y - 1) * resize.y;
 		done = 1;
 	}
-	resize.z = dot.x;
-	dot.x = dot.x + dot.y;
-	dot.y = (dot.y - resize.z) - dot.z;
-	dot.x *= resize.x / 2.0;
-	dot.y *= resize.y / 2.0;
-	dot.x += margin.x / 2.0;
-	dot.y += margin.y / 2.0;
+	ft_resize_map_nxt(pos, &dot, &resize, &margin);
 	return (dot);
+}
+
+void	ft_resize_map_nxt(t_all *pos, t_xy *dot, t_xy *resize, t_xy *margin)
+{
+	resize->z = dot->x;
+	dot->x = dot->x + dot->y;
+	dot->y = (dot->y - resize->z) - dot->z;
+	dot->x *= resize->x;
+	dot->y *= resize->y;
+	dot->x += margin->x / 2.0 + pos->translate.x;
+	dot->y += margin->y / 2.0 + pos->translate.y;
 }
 
 void	ft_trace_map(t_list *map, t_all *pos)
@@ -85,28 +85,18 @@ void	ft_trace_map(t_list *map, t_all *pos)
 	while (map)
 	{
 		start.x = 0;
-		while (map->content && ((int*)map->content)[0] > start.x)
+		while (map->content && ((int *)map->content)[0] > start.x)
 		{
-			if (((int*)map->content)[0] > start.x + 1)
+			if (((int *)map->content)[0] > start.x + 1)
 			{
 				end.x = start.x + 1;
 				end.y = start.y;
-				start.z = ((int*)map->content)[start.x + 1];
-				end.z = ((int*)map->content)[end.x + 1];
-				//mettre fonction qui va remplacer iso (+propre)
+				start.z = ((int *)map->content)[start.x + 1];
+				end.z = ((int *)map->content)[end.x + 1];
 				create_line(pos, ft_resize_map(pos, start),
-						ft_resize_map(pos, end), 0x0000cc);
+						ft_resize_map(pos, end), BLANCCA);
 			}
-			if (map->next && map->next->content 
-					&& ((int*)map->next->content)[0] > start.x)
-			{
-				end.x = start.x;
-				end.y = start.y + 1;
-				start.z = ((int*)map->content)[start.x + 1];
-				end.z = ((int*)map->next->content)[end.x + 1];
-				create_line(pos, ft_resize_map(pos, start),
-						ft_resize_map(pos, end), 0xcc0000);
-			}
+			ft_trace_map_nxt(map, pos, start, end);
 			start.x++;
 		}
 		start.y++;
@@ -114,11 +104,16 @@ void	ft_trace_map(t_list *map, t_all *pos)
 	}
 }
 
-void call_ft(t_all img1)
+void	ft_trace_map_nxt(t_list *map, t_all *pos, t_xy start, t_xy end)
 {
-	//ft_trace_map(&img1, tab, img1.recup);
-	mlx_put_image_to_window(img1.mlx_ptr, img1.win_ptr, img1.img_ptr, 0, 0);
-	mlx_key_hook(img1.win_ptr, ft_key_hook, 0);
-	mlx_loop_hook(img1.mlx_ptr, temp_quit, NULL);
-	mlx_loop(img1.mlx_ptr);
+	if (map->next && map->next->content &&
+			((int *)map->next->content)[0] > start.x)
+	{
+		end.x = start.x;
+		end.y = start.y + 1;
+		start.z = ((int *)map->content)[start.x + 1];
+		end.z = ((int *)map->next->content)[end.x + 1];
+		create_line(pos, ft_resize_map(pos, start),
+				ft_resize_map(pos, end), VIOLETC);
+	}
 }
