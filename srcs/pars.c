@@ -70,10 +70,10 @@ void	ft_resize_map_nxt(t_all *pos, t_xy *dot, t_xy *resize, t_xy *margin)
 	resize->z = dot->x;
 	dot->x = dot->x + dot->y;
 	dot->y = (dot->y - resize->z) - dot->z;
-	dot->x *= resize->x;
-	dot->y *= resize->y;
-	dot->x += margin->x * 0.5 + pos->translate.x;
-	dot->y += margin->y * 0.5 + pos->translate.y;
+	dot->x *= resize->x / 2.0;
+	dot->y *= resize->y / 2.0;
+	dot->x += margin->x / 2.0 + pos->translate.x;
+	dot->y += margin->y / 2.0 + pos->translate.y;
 }
 
 void	ft_trace_map(t_list *map, t_all *pos)
@@ -94,7 +94,7 @@ void	ft_trace_map(t_list *map, t_all *pos)
 				start.z = ((int *)map->content)[start.x + 1];
 				end.z = ((int *)map->content)[end.x + 1];
 				create_line(pos, ft_resize_map(pos, start),
-						ft_resize_map(pos, end), BLANCCA);
+						ft_resize_map(pos, end), VIOLETF);
 			}
 			ft_trace_map_nxt(map, pos, start, end);
 			start.x++;
@@ -114,6 +114,6 @@ void	ft_trace_map_nxt(t_list *map, t_all *pos, t_xy start, t_xy end)
 		start.z = ((int *)map->content)[start.x + 1];
 		end.z = ((int *)map->next->content)[end.x + 1];
 		create_line(pos, ft_resize_map(pos, start),
-				ft_resize_map(pos, end), VIOLETC);
+				ft_resize_map(pos, end), ROSEC);
 	}
 }
