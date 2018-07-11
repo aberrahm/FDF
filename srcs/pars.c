@@ -72,8 +72,8 @@ void	ft_resize_map_nxt(t_all *pos, t_xy *dot, t_xy *resize, t_xy *margin)
 	dot->y = (dot->y - resize->z) - dot->z;
 	dot->x *= resize->x;
 	dot->y *= resize->y;
-	dot->x += margin->x / 2.0 + pos->translate.x;
-	dot->y += margin->y / 2.0 + pos->translate.y;
+	dot->x += margin->x * 0.5 + pos->translate.x;
+	dot->y += margin->y * 0.5 + pos->translate.y;
 }
 
 void	ft_trace_map(t_list *map, t_all *pos)

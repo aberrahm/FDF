@@ -13,14 +13,15 @@
 NAME = fdf
 
 CC = clang
-FLAGS = -Wall -Wextra -Werror
 
+MLX = ./minilibx_macos/libmlx.a
 LFT = ./libft/libft.a
-LIBS = $(LFT)
+LIBS = $(MLX) $(LFT)
 
+MLX_INC = -I ./minilibx_macos
 LFT_INC = -I ./libft
-INC = $(LFT_INC) -I ./
-FRAMEWORK = -lmlx -framework OpenGL -framework AppKit
+INC = $(MLX_INC) $(LFT_INC) -I ./
+FRAMEWORK = -framework OpenGL -framework AppKit
 
 SRCS = srcs/create_image.c \
 	   srcs/main.c \
@@ -34,37 +35,24 @@ OBJ = $(SRCS:%.c=%.o)
 all: $(NAME)
 
 %.o: %.c
-	$(CC) -c $(FLAGS) $< -o $@
+	$(CC) -c $< -o $@
 
 $(NAME) : $(OBJ)
 	make -C ./libft
-	@echo "	"
-	@echo "\\033[42m- - - - - - - - - - - - - - - - - - - - - - \\033[0m"
-	@echo " "
-	@echo "\\033[35m\033[1mLib Ok ! Lib Ok ! Lib Ok ! Lib Ok ! Lib Ok !\\033[0m"
-	@echo " "
-	@echo "\\033[42m- - - - - - - - - - - - - - - - - - - - - - \\033[0m"
-	@echo " "
-	$(CC) $(FLAGS) $(FRAMEWORK) $(LIBS) $(INC) $(OBJ) -o $(NAME)
-	@echo "\\033[43m- - - - - - - - - - - \\033[0m"
-	@echo " "
-	@echo "\\0033[32m\033[1m  Executable created  \\0033[0m"
-	@echo " "
-	@echo "\\033[43m- - - - - - - - - - - \\033[0m"
-	@echo " "
+	@echo "\\033[35m\033[1m[LIBRARY COMPILED]\\033[0m"
+	make -C ./minilibx_macos
+	$(CC) $(FRAMEWORK) $(LIBS) $(INC) $(OBJ) -o $(NAME)
+	@echo "\\0033[32m\033[1m[EXECUTABLE CREATED]\\0033[0m"
 
 clean:
 	make clean -C ./libft
+	make clean -C ./minilibx_macos
 	rm -rf $(OBJ)
 
 fclean: clean
 	make fclean -C ./libft
 	rm -rf $(NAME)
-	@echo "\\033[42m- - - - - - - - - - - \\033[0m"
-	@echo " "
-	@echo "\\0033[31m\033[1m  Executable deleted  \\0033[0m"
-	@echo " "
-	@echo "\\033[42m- - - - - - - - - - - \\033[0m"
+	@echo "\\0033[31m\033[1m[EXECUTABLE DELETED]\\0033[0m"
 
 re: fclean all
 

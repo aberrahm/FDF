@@ -14,10 +14,10 @@
 
 void	create_img(t_all *img)
 {
-	img->size_win_x = 1900;
-	img->size_win_y = 1300;
-	img->width = 1900;
-	img->height = 1300;
+	img->size_win_x = 1250;
+	img->size_win_y = 700;
+	img->width = 1250;
+	img->height = 700;
 	img->mlx_ptr = mlx_init();
 	img->img_ptr = mlx_new_image(img->mlx_ptr, img->width, img->height);
 	img->data = mlx_get_data_addr(img->img_ptr, &img->bpp,

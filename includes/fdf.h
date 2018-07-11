@@ -15,7 +15,7 @@
 
 # include "./keynote.h"
 # include "./color.h"
-# include "mlx.h"
+# include "../minilibx_macos/mlx.h"
 # include <math.h>
 # include <fcntl.h>
 # include "../libft/libft.h"
